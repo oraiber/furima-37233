@@ -22,8 +22,9 @@ has_many: orders
 | prefecture_id | integer    | null: false                    |
 | city          | string     | null: false                    |
 | address1      | string     | null: false                    |
-| building_name | string     | null: false                    |
+| building_name | string     |                                |
 | phone_number  | string     | null: false                    |
+| order         | references | null: false, foreign_key: true |
 
 belongs_to: order
 
@@ -33,10 +34,10 @@ belongs_to: order
 | ------- | ---------- | ------------------------------ |
 | item    | references | null: false, foreign_key: true |
 | user    | references | null: false, foreign_key: true |
-| address | references | null: false, foreign_key: true |
 
 belongs_to: item
 has_one: address
+belongs_to: user
 
 ## items テーブル
 
@@ -53,4 +54,4 @@ has_one: address
 | user               | references | null: false, foreign_key: true |
 
 belongs_to: user
-belongs_to: order
+has_one: order
