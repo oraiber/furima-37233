@@ -13,20 +13,18 @@
 
 has_many: items
 has_many: orders
-belongs_to: address
 
 ## addressesテーブル
 
 | Column        | Type       | Option                         |
 | ------------- | ---------- | ------------------------------ |
-| user          | references | null: false, foreign_key: true |
 | post_code     | string     | null: false                    |
-| prefecture    | string     | null: false                    |
+| prefecture_id | integer    | null: false                    |
 | city          | string     | null: false                    |
 | address1      | string     | null: false                    |
-| building_name | string     |                                |
+| building_name | string     | null: false                    |
+| phone_number  | string     | null: false                    |
 
-belongs_to: user
 belongs_to: order
 
 ## orders テーブル
@@ -37,23 +35,22 @@ belongs_to: order
 | user    | references | null: false, foreign_key: true |
 | address | references | null: false, foreign_key: true |
 
-belongs_to: users
 belongs_to: item
-belongs_to: address
+has_one: address
 
 ## items テーブル
 
-| Column          | Type       | Option
-| --------------- | ---------- | ------------------------------ |
-| item_name       | string     | null: false                    |
-| text            | text       | null: false                    |
-| category        | references | null: false                    |
-| item_condition  | integer    | null: false                    |
-| delivery_charge | integer    | null: false                    |
-| area            | integer    | null: false                    |
-| days            | integer    | null: false                    |
-| price           | integer    | null: false                    |
-| user            | references | null: false, foreign_key: true |
+| Column             | Type       | Option
+| ------------------ | ---------- | ------------------------------ |
+| item_name          | string     | null: false                    |
+| text               | text       | null: false                    |
+| category_id        | integer    | null: false                    |
+| item_condition_id  | integer    | null: false                    |
+| delivery_charge_id | integer    | null: false                    |
+| area_id            | integer    | null: false                    |
+| days_id            | integer    | null: false                    |
+| price              | string     | null: false                    |
+| user               | references | null: false, foreign_key: true |
 
 belongs_to: user
 belongs_to: order
