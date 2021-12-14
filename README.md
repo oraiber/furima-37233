@@ -1,28 +1,29 @@
 ## users テーブル
 
-| Column                  | Type    | Options     |
-| ----------------------- | ------- | ----------- |
-| email                   | string  | null: false |
-| encrypted_password      | string  | null: false |
-| nickname                | string  | null: false |
-| first_name              | string  | null: false |
-| family_name             | string  | null: false |
-| birth_day               | date    | null: false |
+| Column                  | Type    | Options                   |
+| ----------------------- | ------- | ------------------------- |
+| email                   | string  | null: false, unique: true |
+| encrypted_password      | string  | null: false               |
+| nickname                | string  | null: false               |
+| first_name              | string  | null: false               |
+| family_name             | string  | null: false               |
+| birth_day               | date    | null: false               |
 
 has_many: items
 has_many: comments
+belongs_to: card
+belongs_to: buyer
 
-## card テーブル
+## cards テーブル
 
 | Column      | Type       | Options                        |
 | ----------- | ---------- | ------------------------------ |
 | user_id     | references | null: false, foreign_key: true |
 | card_id     |            | null: false                    |
-| customer_id |            | null: false                    |
 
 belongs_to: user
 
-## buyer テーブル
+## buyers テーブル
 | Column        | Type       | Option                         |
 | ------------- | ---------- | ------------------------------ |
 | first_name    | string     | null: false                    |
@@ -36,6 +37,17 @@ belongs_to: user
 | user_id       | references | null: false, foreign_key: true |
 
 belongs_to: user
+belongs_to: item
+has_many: orders
+
+## orders テーブル
+
+| Column  | Type       | Options                        |
+| ------- | ---------- | ------------------------------ |
+| item_id | references | null: false, foreign_key: true |
+| user_id | references | null: false, foreign_key: true |
+
+belongs_to: buyer
 
 ## comments テーブル
 
@@ -53,24 +65,33 @@ belongs_to: item
 | Column          | Type       | Option
 | --------------- | ---------- | ------------------------------ |
 | product_name    | string     | null: false                    |
-| price           | string     | null: false                    |
+| price           | integer    | null: false                    |
 | text            | text       | null: false                    |
-| image           |            |                                |
 | user_id         | references | null: false, foreign_key: true |
-| item_condition  | string     | null: false                    |
-| delivery_charge | string     | null: false                    |
-| area            |            | null: false                    |
-| days            |            | null: false                    |
 
 belongs_to: user
+belongs_to: item_category
+belongs_to: buyer
 has_many: comments
 has_many: categories
 
-## category テーブル
+## categories テーブル
 
-| Column          | Type  | Option  |
-| --------------- | ----- | ------- |
-| category_name   |       |         |
-| detail          |       |         |
+| Column          | Type    | Option  |
+| --------------- | ------- | ------- |
+| category_name   | integer |         |
+| detail          | integer |         |
+
+belongs_to: item
+
+## item_categories テーブル
+
+| Column          | Type       | Option
+| --------------- | ---------- | ------------------------------ |
+| item_id         | references | null: false                    |
+| item_condition  | integer    | null: false                    |
+| delivery_charge | integer    | null: false                    |
+| area            | integer    | null: false                    |
+| days            | integer    | null: false                    |
 
 belongs_to: item
