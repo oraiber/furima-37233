@@ -70,6 +70,59 @@ RSpec.describe User, type: :model do
         @user.valid?
         expect(@user.errors.full_messages).to include('Password is too short (minimum is 6 characters)')
       end
+      it 'first_name半角文字が含まれている場合は登録できないこと' do
+        @user.first_name = 'ｱｲｳｴｵ'
+        @user.valid?
+        expect(@user.errors.full_messages).to include("First name には全角文字を使用してください")
+      end
+      it 'family_name半角文字が含まれている場合は登録できないこと' do
+        @user.family_name = 'ｱｲｳｴｵ'
+        @user.valid?
+        expect(@user.errors.full_messages).to include("Family name には全角文字を使用してください")
+      end
+      it 'カタカナ以外の文字ひらがなが含まれている場合は登録できないこと' do
+        @user.first_name_kana = 'あいうえお'
+        @user.valid?
+        expect(@user.errors.full_messages).to include("First name kana にはカタカナを使用してください")
+      end
+      it 'カタカナ以外の文字ひらがなが含まれている場合は登録できないこと' do
+        @user.family_name_kana = 'あいうえお'
+        @user.valid?
+        expect(@user.errors.full_messages).to include("Family name kana にはカタカナを使用してください")
+      end
+      it 'カタカナ以外の文字漢字が含まれている場合は登録できないこと' do
+        @user.first_name_kana = '山田'
+        @user.valid?
+        expect(@user.errors.full_messages).to include("First name kana にはカタカナを使用してください")
+      end
+      it 'カタカナ以外の文字漢字が含まれている場合は登録できないこと' do
+        @user.family_name_kana = '山田'
+        @user.valid?
+        expect(@user.errors.full_messages).to include("Family name kana にはカタカナを使用してください")
+      end
+      it '@が含まれていないと登録できないこと' do
+        @user.email = 'testing.com'
+        @user.valid?
+        expect(@user.errors.full_messages).to include('Email is invalid')
+      end
+      it '英字のみでは登録できないこと' do
+        @user.password = 'asdzxc'
+        @user.password_confirmation = 'asdzxc'
+        @user.valid?
+        expect(@user.errors.full_messages).to include('Password は半角英数字混合で設定してください')
+      end
+      it '数字のみでは登録できないこと' do
+        @user.password = '123456'
+        @user.password_confirmation = '123456'
+        @user.valid?
+        expect(@user.errors.full_messages).to include('Password は半角英数字混合で設定してください')
+      end
+      it '全角だと登録できないこと' do
+        @user.password = 'ＡＢｃ１２３'
+        @user.password_confirmation = 'ＡＢｃ１２３'
+        @user.valid?
+        expect(@user.errors.full_messages).to include('Password は半角英数字混合で設定してください')
+      end
     end
   end
 end
