@@ -55,12 +55,12 @@ RSpec.describe OrderAddress, type: :model do
         @order_address.valid?
         expect(@order_address.errors.full_messages).to include("Phone number can't be blank")
       end
-      it 'phone_number10桁以下だと保存できないこと' do
+      it 'phone_number9桁以下だと保存できないこと' do
         @order_address.phone_number = '090456789'
         @order_address.valid?
         expect(@order_address.errors.full_messages).to include("Phone number Input only number")
       end
-      it 'phone_number11桁以上だと保存できないこと' do
+      it 'phone_number12桁以上だと保存できないこと' do
         @order_address.phone_number = '090123456789'
         @order_address.valid?
         expect(@order_address.errors.full_messages).to include("Phone number Input only number")
@@ -69,6 +69,21 @@ RSpec.describe OrderAddress, type: :model do
         @order_address.token = nil
         @order_address.valid?
         expect(@order_address.errors.full_messages).to include("Token can't be blank")
+      end
+      it '電話番号に半角数字以外が含まれている場合は保存できないこと' do
+        @order_address.phone_number = '０８０１２３４５６７８'
+        @order_address.valid?
+        expect(@order_address.errors.full_messages).to include("Phone number Input only number")
+      end
+      it 'ユーザーが紐付いていなければ投稿できない' do
+        @order_address.user_id = nil
+        @order_address.valid?
+        expect(@order_address.errors.full_messages).to include("User can't be blank")
+      end
+      it 'itemが紐付いていなければ投稿できない' do
+        @order_address.item_id = nil
+        @order_address.valid?
+        expect(@order_address.errors.full_messages).to include("Item can't be blank")
       end
     end
   end
